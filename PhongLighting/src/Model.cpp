@@ -8,8 +8,9 @@ Model::Model(const char* file)
 	Model::file = file;
 	data = getData();
 
-	traverseNode(0);
+	glm::mat4 startMatrix = glm::mat4(1.0f);
 
+	traverseNode(0, startMatrix);
 }
 
 void Model::Draw(Shader& shader, Camera& camera)
@@ -19,7 +20,6 @@ void Model::Draw(Shader& shader, Camera& camera)
 		meshes[i].Draw(shader, camera, matricesMeshes[i]);
 	}
 }
-
 
 void Model::loadMesh(unsigned int indMesh)
 {
@@ -131,7 +131,7 @@ std::vector<float> Model::getFloats(json accessor)
 {
 	std::vector<float> floatVec;
 
-	unsigned int buffViewInd = accessor.value("bufferView", 0);
+	unsigned int buffViewInd = accessor["bufferView"];
 	unsigned int count = accessor["count"];
 	unsigned int accByteOffset = accessor.value("byteOffset", 0);
 	std::string type = accessor["type"];
@@ -293,4 +293,9 @@ std::vector<glm::vec4> Model::groupFloatsVec4(std::vector<float> floatVec)
 
 	}
 	return vectors;
+}
+
+void Model::SetScale(glm::vec3 newScale)
+{
+	modelScale = newScale;
 }

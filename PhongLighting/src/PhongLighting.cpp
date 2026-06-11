@@ -32,25 +32,30 @@ int main()
 	Shader shader("resources/shaders/default.vert", "resources/shaders/default.frag");
 
 	glm::vec4 lightColor(1.0f, 1.0f, 1.0f, 1.0f);
-	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
+	glm::vec3 lightPos = glm::vec3(5.f, 5.f, 5.f);
 
 	Camera cam(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 
-	Model wood("resources/models/candle/scene.gltf");
+	Model model("resources/models/candle/scene.gltf");
 
-	shader.Activate();
-	glUniform4f(glGetUniformLocation(shader.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
-	glUniform3f(glGetUniformLocation(shader.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+	glm::mat4 modelMatrix = glm::mat4(1.0f);
+	modelMatrix = glm::scale(modelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 
 	
 	glEnable(GL_DEPTH_TEST);
 	while (!glfwWindowShouldClose(win))
 	{
-		glClearColor(0.85f, 0.85f, 0.90f, 1.0f);
+		glClearColor(0.85f, 0.85f, 0.90f, 1.0f);;
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		cam.Inputs(win);
 		cam.updateMatrix(45, 0.1f, 100.0f);
-		wood.Draw(shader, cam);
+
+		shader.Activate();
+		glUniformMatrix4fv(glGetUniformLocation(shader.ID, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glUniform4f(glGetUniformLocation(shader.ID, "lightColor"), lightColor.x, lightColor.y, lightColor.z, lightColor.w);
+		glUniform3f(glGetUniformLocation(shader.ID, "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+
+		model.Draw(shader, cam);
 
 		glfwPollEvents();
 		glfwSwapBuffers(win);

@@ -14,13 +14,15 @@ out vec2 texCoords;
 
 uniform mat4 model;
 uniform mat4 camMatrix;
+uniform mat4 meshMatrix;
 
 
 
 void main()
 {
-	crntPos = vec3(model * vec4(aPos, 1.0f));
-	Normal = mat3(model) * aNormal;
+	crntPos = vec3(model * meshMatrix * vec4(aPos, 1.0f));
+	Normal = mat3(model * meshMatrix) * aNormal;
+	
 	color = aColor;
 	texCoords = aTex;
 

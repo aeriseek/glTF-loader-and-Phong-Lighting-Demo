@@ -45,9 +45,9 @@ vec4 directionalLight()
 	vec3 normal = normalize(Normal);
 	vec3 lightDirection = normalize(vec3(1.0f, 1.0f, 1.0f));
 
-	float diffuse = max(dot(normal, lightDirection), 0.0f);
+	float diffuse = max(dot(normal, lightDirection), 0.0f) * 1.5f;
 
-	float specularLight = 0.50f;
+	float specularLight = .70f;
 
 	vec3 viewDir = normalize(camPos - crntPos);
 	vec3 reflectionDir = reflect(lightDirection, normal);
@@ -97,7 +97,7 @@ float linearizeDepth(float depth)
 	return (2.0 * near * far) / (far + near - (depth * 2.0 - 1.0) * (far - near));
 }
 
-float logisticDepth(float depth, float steepness = 0.1f, float offset = 25.0f)
+float logisticDepth(float depth, float steepness = 0.1f, float offset = 500.0f)
 {
 	float zVal = linearizeDepth(depth);
 	return (1 / (1 + exp(-steepness * (zVal - offset))));

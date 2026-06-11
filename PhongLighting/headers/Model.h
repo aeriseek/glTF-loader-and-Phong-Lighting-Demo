@@ -11,7 +11,10 @@ public:
 
 	void Draw(Shader& shader, Camera& camera);
 
+	void SetScale(glm::vec3 newScale);
+
 private:
+	glm::vec3 modelScale = glm::vec3(1.0f, 1.0f, 1.0f);
 	const char* file;
 	std::vector<unsigned char> data;
 	json JSON;
